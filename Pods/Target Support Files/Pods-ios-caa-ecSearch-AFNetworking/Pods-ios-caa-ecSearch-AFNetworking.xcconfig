@@ -1,0 +1,1 @@
+PODS_IOS_CAA_ECSEARCH_AFNETWORKING_OTHER_LDFLAGS = -framework "CoreGraphics" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration"
