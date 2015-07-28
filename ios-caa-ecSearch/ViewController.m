@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "MomoSearch.h"
 #import "PcHomeSearch.h"
+#import "KingStoneSearch.h"
 
 @interface ViewController ()
 @end
@@ -38,8 +39,14 @@
         }
     }];
 
-    
-    
+    //KingStone
+    ECSearch *kingStoneSearch = [[KingStoneSearch alloc] init];
+    [kingStoneSearch searchWithKeywordAsync:queryKeyword completion:^(NSMutableArray *result, NSError *error) {
+        if (error == nil) {
+            NSMutableArray *array = result;
+            NSLog(@"==========array==%@===============",array);
+        }
+    }];
     
 }
 

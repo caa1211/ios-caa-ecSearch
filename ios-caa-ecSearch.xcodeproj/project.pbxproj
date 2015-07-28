@@ -24,6 +24,7 @@
 		ADA727DA1B663D8A002AA449 /* PcHomeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA727D91B663D8A002AA449 /* PcHomeSearch.m */; };
 		ADA727DE1B671A1D002AA449 /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ADA727DC1B671A1D002AA449 /* SearchResultCell.m */; };
 		ADA727DF1B671A1D002AA449 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADA727DD1B671A1D002AA449 /* SearchResultCell.xib */; };
+		EE1EE7FF1B675E2200C940F3 /* KingStoneSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1EE7FE1B675E2200C940F3 /* KingStoneSearch.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		ADA727DC1B671A1D002AA449 /* SearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultCell.m; sourceTree = "<group>"; };
 		ADA727DD1B671A1D002AA449 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		B1BB36DDEC9F9D4D8D56ABFE /* Pods-ios-caa-ecSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-caa-ecSearch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios-caa-ecSearch/Pods-ios-caa-ecSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		EE1EE7FD1B675E2200C940F3 /* KingStoneSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KingStoneSearch.h; sourceTree = "<group>"; };
+		EE1EE7FE1B675E2200C940F3 /* KingStoneSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KingStoneSearch.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +183,8 @@
 				ADA727D61B663CEB002AA449 /* ECSearch.m */,
 				ADA727D81B663D8A002AA449 /* PcHomeSearch.h */,
 				ADA727D91B663D8A002AA449 /* PcHomeSearch.m */,
+				EE1EE7FD1B675E2200C940F3 /* KingStoneSearch.h */,
+				EE1EE7FE1B675E2200C940F3 /* KingStoneSearch.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				ADA727CD1B663692002AA449 /* MomoSearch.m in Sources */,
 				AD9D9DCB1B661BFC00EAE292 /* SearchResultItem.m in Sources */,
 				ADA727D71B663CEB002AA449 /* ECSearch.m in Sources */,
+				EE1EE7FF1B675E2200C940F3 /* KingStoneSearch.m in Sources */,
 				AD9D9D9D1B66190100EAE292 /* AppDelegate.m in Sources */,
 				AD9D9DBF1B66195F00EAE292 /* YQL.m in Sources */,
 				AD9D9D9A1B66190100EAE292 /* main.m in Sources */,
