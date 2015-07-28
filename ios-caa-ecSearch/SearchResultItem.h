@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <OHMKit.h>
+
 
 @interface SearchResultItem : NSObject
 

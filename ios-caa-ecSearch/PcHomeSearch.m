@@ -8,6 +8,12 @@
 
 #import "PcHomeSearch.h"
 #import <AFHTTPRequestOperationManager.h>
+#import <OHMKit.h>
+
+//OHMMappable([SearchResultItem class]);
+
+//OHMSetMapping([searchResultItem class], @{@"favorite_word"  : @"favoriteWord",
+//                                 @"favorite_number": @"favoriteNumber");
 
 @interface PcHomeSearch ()
     @property(nonatomic, strong) AFHTTPRequestOperationManager *requestMamager;
@@ -29,10 +35,8 @@
 }
 
 -(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion {
- 
-    
     [self.requestMamager GET:@"http://ecshweb.pchome.com.tw/search/v3.3/all/results" parameters:@{@"q": keyword} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       
+        
         NSArray *itemAry = responseObject[@"prods"];
         NSMutableArray* resAry = [[NSMutableArray alloc]init];
         for (NSDictionary *itemRaw in itemAry) {
@@ -43,6 +47,45 @@
             searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:itemRaw[@"picS"]];
             searchResultItem.price =  [itemRaw[@"price"] integerValue];
             searchResultItem.desc = itemRaw[@"describe"];
+            [resAry addObject:searchResultItem];
+        }
+        
+        completion(resAry, nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        completion(nil, error);
+    }] ;
+}
+
+
+-(void) searchWithKeywordAsync_map:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion {
+    
+    OHMMappable([SearchResultItem class]);
+    OHMSetMapping([SearchResultItem class], @{
+                                              @"name": @"title",
+                                              @"price": @"price",
+                                              @"describe": @"desc",
+                                              @"picS": @"imageUrl",
+                                              @"Id": @"url"
+                                              });
+                                     
+    OHMValueAdapterBlock completeImageUrl = ^(NSString *url) {
+        return [[self.baseImageUrlStr copy] stringByAppendingString:url];
+    };
+    
+    OHMValueAdapterBlock completeUrl = ^(NSString *url) {
+        return [[self.baseUrlStr copy] stringByAppendingString:url];
+    };
+    
+    OHMSetAdapter([SearchResultItem class], @{@"imageUrl": completeImageUrl, @"url": completeUrl});
+    
+    [self.requestMamager GET:@"http://ecshweb.pchome.com.tw/search/v3.3/all/results" parameters:@{@"q": keyword} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                         
+        NSArray *itemAry = responseObject[@"prods"];
+        NSMutableArray* resAry = [[NSMutableArray alloc]init];
+        for (NSDictionary *itemRaw in itemAry) {
+            SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
+            searchResultItem.property = @"PCHome";
+            [searchResultItem setValuesForKeysWithDictionary:itemRaw];
             [resAry addObject:searchResultItem];
         }
         

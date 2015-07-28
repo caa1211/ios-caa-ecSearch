@@ -7,6 +7,7 @@
 //
 
 #import "ECSearch.h"
+#import <OHMKit.h>
 
 @interface PcHomeSearch : ECSearch
 

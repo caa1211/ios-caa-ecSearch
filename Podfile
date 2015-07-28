@@ -3,6 +3,7 @@
 
 target 'ios-caa-ecSearch' do
     pod "AFNetworking"
+    pod "OHMKit"
 end
 
 target 'ios-caa-ecSearchTests' do

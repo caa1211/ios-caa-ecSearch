@@ -20,11 +20,14 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - OHMKit (0.2.0)
 
 DEPENDENCIES:
   - AFNetworking
+  - OHMKit
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  OHMKit: 3569aae9aebc41e218451e4e1d5e77d8bdb28684
 
 COCOAPODS: 0.37.2

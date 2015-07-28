@@ -11,3 +11,14 @@
 
 @interface MomoSearch : ECSearch
 @end
+
+
+@interface MomoSearchResultItem_A : NSObject
+  @property (nonatomic, strong) NSString *href;
+  @property (nonatomic, strong) NSDictionary *img;
+@end
+
+@interface MomoSearchResultItem : NSObject
+  @property (nonatomic, strong) NSArray *p;
+  @property (nonatomic, strong) MomoSearchResultItem_A *a;
+@end

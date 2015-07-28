@@ -17,6 +17,12 @@
   @property(nonatomic, strong) NSString *queryString;
 @end
 
+@implementation MomoSearchResultItem;
+@end
+
+@implementation MomoSearchResultItem_A
+@end
+
 @implementation MomoSearch
 
 -(id)init {
@@ -37,8 +43,6 @@
     
     NSDictionary *results = [self.yql query:queryStr];
     NSMutableArray* resAry = [[NSMutableArray alloc]init];
-    
-    //if (  [results objectForKey:@"query"] != nil && [[results objectForKey:@"query"] objectForKey:@"results"]!=nil ) {
     
     if ( ![results[@"query"] isEqual:[NSNull null]] &&
          ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
@@ -73,11 +77,57 @@
     return resAry;
 }
 
+
+-(NSMutableArray *) searchWithKeyword_map:(NSString*)keyword {
+    
+    OHMMappable([MomoSearchResultItem_A class]);
+    OHMMappable([MomoSearchResultItem class]);
+    OHMSetMapping([MomoSearchResultItem class], @{
+                                              @"p": @"p",
+                                              @"a": @"a"
+                                              });
+    
+    NSString* queryKeyword = [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* queryStr = [NSString stringWithFormat:self.queryString,queryKeyword];
+    NSDictionary *results = [self.yql query:queryStr];
+    NSMutableArray* resAry = [[NSMutableArray alloc]init];
+
+    if ( ![results[@"query"] isEqual:[NSNull null]] &&
+        ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
+        ![results[@"query"][@"results"][@"li"] isEqual:[NSNull null]])
+    {
+        NSArray *itemAry = results[@"query"][@"results"][@"li"];
+        
+        for (NSDictionary *itemRaw in itemAry) {
+
+            SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
+            
+            MomoSearchResultItem* momoItem = [[MomoSearchResultItem alloc] init];
+            [momoItem setValuesForKeysWithDictionary:itemRaw];
+            
+            searchResultItem.property = @"Momo";
+            searchResultItem.title = momoItem.p[0][@"a"][@"title"];
+            searchResultItem.url = momoItem.a.href;
+            searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:momoItem.a.img[@"src"]];
+            
+            if ([momoItem.p[1][@"span"] isKindOfClass:[NSArray class]]) {
+                searchResultItem.price =  [momoItem.p[1][@"span"][0][@"b"][@"content"] integerValue];
+            }
+            
+            searchResultItem.desc = @"";
+            [resAry addObject:searchResultItem];
+        }
+        
+    }
+    
+    return resAry;
+}
+
 -(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion {
     
     dispatch_async(self.queryQueue, ^{
         
-        NSMutableArray* resAry = [self searchWithKeyword:keyword];
+        NSMutableArray* resAry = [self searchWithKeyword_map:keyword];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             completion(resAry, nil);
