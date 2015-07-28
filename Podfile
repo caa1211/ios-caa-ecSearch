@@ -3,6 +3,7 @@
 
 target 'ios-caa-ecSearch' do
     pod "AFNetworking"
+    pod "JSONModel"
 end
 
 target 'ios-caa-ecSearchTests' do

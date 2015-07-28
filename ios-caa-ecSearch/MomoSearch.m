@@ -17,6 +17,31 @@
   @property(nonatomic, strong) NSString *queryString;
 @end
 
+
+
+@implementation MomoSearchItem
+
++(JSONKeyMapper*)keyMapper
+{
+    return [[JSONKeyMapper alloc] initWithDictionary:@{
+                                                       @"a.href" : @"url",
+                                                       @"a.img.src" : @"imageUrl",
+                                                       @"tmpTitle" : @"title",
+                                                       @"tmpPrice" : @"price",
+                                                       @"property" : @"property",
+                                                       @"desc" : @"desc"
+                                                       }];
+}
+
+-(void)setImageUrl:(NSString*)url
+{
+    NSString *baseImageUrlStr = @"http://www.momoshop.com.tw";
+    url = [baseImageUrlStr stringByAppendingString:url];
+    [super setImageUrl:url];
+}
+
+@end
+
 @implementation MomoSearch
 
 -(id)init {
@@ -30,6 +55,7 @@
     return self;
 }
 
+
 -(NSMutableArray *) searchWithKeyword:(NSString*)keyword {
     NSString* queryKeyword = [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -37,34 +63,31 @@
     
     NSDictionary *results = [self.yql query:queryStr];
     NSMutableArray* resAry = [[NSMutableArray alloc]init];
-    
-    //if (  [results objectForKey:@"query"] != nil && [[results objectForKey:@"query"] objectForKey:@"results"]!=nil ) {
-    
+
     if ( ![results[@"query"] isEqual:[NSNull null]] &&
-         ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
-         ![results[@"query"][@"results"][@"li"] isEqual:[NSNull null]])
+        ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
+        ![results[@"query"][@"results"][@"li"] isEqual:[NSNull null]])
     {
         NSArray *itemAry = results[@"query"][@"results"][@"li"];
         
         for (NSDictionary *itemRaw in itemAry) {
-            if (![itemRaw[@"p"] isEqual:[NSNull null]]&&
-                [itemRaw[@"p"] isKindOfClass:[NSArray class]] &&
-                ![itemRaw[@"a"] isEqual:[NSNull null]]&&
-                ![itemRaw[@"a"][@"href"] isEqual:[NSNull null]]&&
-                ![itemRaw[@"p"][1] isEqual:[NSNull null]] &&
-                ![itemRaw[@"p"][1][@"span"] isEqual:[NSNull null]] &&
-                [itemRaw[@"p"][1][@"span"] isKindOfClass:[NSArray class]]
-                ) {
+            NSError *err;
+            
+            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:itemRaw];
+            
+            if ([itemRaw[@"p"] isKindOfClass:[NSArray class]]){
+                [dic setValue:itemRaw[@"p"][0][@"a"][@"title"] forKey:@"tmpTitle"];
                 
-                SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
-                searchResultItem.property = @"Momo";
-                searchResultItem.title = itemRaw[@"p"][0][@"a"][@"title"];
-                searchResultItem.url = itemRaw[@"a"][@"href"];
-                searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:itemRaw[@"a"][@"img"][@"src"]];
-                searchResultItem.price =  [itemRaw[@"p"][1][@"span"][0][@"b"][@"content"] integerValue];
-                searchResultItem.desc = @"";
-                [resAry addObject:searchResultItem];
+                if ([dic[@"p"][1][@"span"] isKindOfClass:[NSArray class]]) {
+                    [dic setValue:itemRaw[@"p"][1][@"span"][0][@"b"][@"content"] forKey:@"tmpPrice"];
+                }
             }
+            
+            [dic setObject:@"" forKey:@"desc"];
+            [dic setObject:@"Momo" forKey:@"property"];
+            
+            MomoSearchItem *momoitem = [[MomoSearchItem alloc]initWithDictionary:dic error:&err];
+            [resAry addObject:momoitem];
         }
         
     }

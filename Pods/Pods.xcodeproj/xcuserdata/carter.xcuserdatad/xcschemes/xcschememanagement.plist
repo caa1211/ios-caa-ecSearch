@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-ios-caa-ecSearch-JSONModel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ios-caa-ecSearch.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7F6D9B1527514954CF975FF0</key>
+		<key>6A301207D2265D99295EE1CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF571ECEA2CD2C49583388D9</key>
+		<key>88C2AC96B0DD3DCF18CAB83C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBE60853B9FF0DD5464FEB0F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

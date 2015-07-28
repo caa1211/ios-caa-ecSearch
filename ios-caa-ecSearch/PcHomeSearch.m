@@ -11,9 +11,37 @@
 
 @interface PcHomeSearch ()
     @property(nonatomic, strong) AFHTTPRequestOperationManager *requestMamager;
-    @property(nonatomic, strong) NSString *baseImageUrlStr;
-    @property(nonatomic, strong) NSString *baseUrlStr;
 @end
+
+
+@implementation PcHome24Item
++(JSONKeyMapper*)keyMapper
+{
+    return [[JSONKeyMapper alloc] initWithDictionary:@{
+                                                       @"name": @"title",
+                                                       @"picS": @"imageUrl",
+                                                       @"Id": @"url",
+                                                       @"describe": @"desc",
+                                                       @"price": @"price"
+                                                       }];
+}
+
+-(void)setImageUrl:(NSString*)url
+{
+    NSString *baseImageUrlStr = @"http://ec1img.pchome.com.tw";
+    url = [baseImageUrlStr stringByAppendingString:url];
+    [super setImageUrl:url];
+}
+
+-(void)setUrl:(NSString*)url
+{
+    NSString *baseUrlStr = @"http://24h.pchome.com.tw/prod/";
+    url = [baseUrlStr stringByAppendingString:url];
+    [super setUrl:url];
+}
+
+@end
+
 
 
 @implementation PcHomeSearch
@@ -22,8 +50,6 @@
     self = [super init];
     if(self){
         self.requestMamager = [[AFHTTPRequestOperationManager alloc]init];
-        self.baseImageUrlStr = @"http://ec1img.pchome.com.tw";
-        self.baseUrlStr = @"http://24h.pchome.com.tw/prod/";
     }
     return self;
 }
@@ -36,14 +62,11 @@
         NSArray *itemAry = responseObject[@"prods"];
         NSMutableArray* resAry = [[NSMutableArray alloc]init];
         for (NSDictionary *itemRaw in itemAry) {
-            SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
-            searchResultItem.property = @"PCHome";
-            searchResultItem.title = itemRaw[@"name"];
-            searchResultItem.url = [[self.baseUrlStr copy] stringByAppendingString:itemRaw[@"Id"]];
-            searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:itemRaw[@"picS"]];
-            searchResultItem.price =  [itemRaw[@"price"] integerValue];
-            searchResultItem.desc = itemRaw[@"describe"];
-            [resAry addObject:searchResultItem];
+            
+            NSError *err;
+            PcHome24Item *item = [[PcHome24Item alloc]initWithDictionary:itemRaw error:&err];
+            item.property = @"PCHome";
+            [resAry addObject:item];
         }
         
         completion(resAry, nil);

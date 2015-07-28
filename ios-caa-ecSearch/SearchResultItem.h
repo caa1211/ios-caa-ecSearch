@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JSONModel.h"
 
-@interface SearchResultItem : NSObject
+@interface SearchResultItem : JSONModel
 
 @property(nonatomic, strong) NSString *property;
 @property(nonatomic, strong) NSString *title;

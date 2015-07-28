@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "ECSearch.h"
-
 @interface MomoSearch : ECSearch
+
+@end
+
+
+@interface MomoSearchItem : SearchResultItem
+
 @end
