@@ -9,6 +9,7 @@
 #import "SearchResultViewController.h"
 #import "MomoSearch.h"
 #import "PcHomeSearch.h"
+#import "KingStoneSearch.h"
 #import "SearchResultCell.h"
 
 @interface SearchResultViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
@@ -22,7 +23,8 @@
 
 typedef enum ECPROPERTY : NSInteger {
     ECPROPERTY_MOMO=0,
-    ECPROPERTY_PCHOME24
+    ECPROPERTY_PCHOME24,
+    ECPROPERTY_KINGSTONE
 }EFFECT_MODE;
 
 
@@ -45,6 +47,7 @@ typedef enum ECPROPERTY : NSInteger {
     
     [self.ecPropertySet addIndex:ECPROPERTY_MOMO];
     [self.ecPropertySet addIndex:ECPROPERTY_PCHOME24];
+    [self.ecPropertySet addIndex:ECPROPERTY_KINGSTONE];
     
     self.searchBar.text =@"iphone 6";
     [self doQuery:self.searchBar.text];
@@ -126,6 +129,18 @@ typedef enum ECPROPERTY : NSInteger {
         //PCHome
         ECSearch *pcHomeSearch = [[PcHomeSearch alloc] init];
         [pcHomeSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
+            if (error == nil) {
+                [self.searchResultItems addObjectsFromArray:result];
+                // Sort
+                [self.tableView reloadData];
+            }
+        }];
+    }
+
+    if ([self.ecPropertySet containsIndex:ECPROPERTY_KINGSTONE]) {
+        //KingStone
+        ECSearch *kingStoneSearch = [[KingStoneSearch alloc] init];
+        [kingStoneSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
                 // Sort
