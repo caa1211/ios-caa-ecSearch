@@ -10,6 +10,5 @@
 #import "SearchResultItem.h"
 
 @interface ECSearch : NSObject
--(NSMutableArray *) searchWithKeyword:(NSString*)keyword;
 -(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion;
 @end

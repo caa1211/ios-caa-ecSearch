@@ -37,7 +37,7 @@ typedef enum ECPROPERTY : NSInteger {
     self.tableView.delegate = self;
     [self setupSearchBar];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"SearchResultCell" bundle:nil] forCellReuseIdentifier:@"SearchResultCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"SearchResultCell" bundle:nil] forCellReuseIdentifier:@"SearchResultCell"]; 
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DefaultCell"];
     
@@ -116,6 +116,7 @@ typedef enum ECPROPERTY : NSInteger {
         [momoSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
+                // Sort
                 [self.tableView reloadData];
             }
         }];
@@ -127,6 +128,7 @@ typedef enum ECPROPERTY : NSInteger {
         [pcHomeSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
+                // Sort
                 [self.tableView reloadData];
             }
         }];
