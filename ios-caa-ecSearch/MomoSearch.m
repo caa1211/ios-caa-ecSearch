@@ -36,18 +36,40 @@
     NSString* queryStr = [NSString stringWithFormat:self.queryString,queryKeyword];
     
     NSDictionary *results = [self.yql query:queryStr];
-    NSArray *itemAry = results[@"query"][@"results"][@"li"];
     NSMutableArray* resAry = [[NSMutableArray alloc]init];
-    for (NSDictionary *itemRaw in itemAry) {
-        SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
-        searchResultItem.property = @"Momo";
-        searchResultItem.title = itemRaw[@"p"][0][@"a"][@"title"];
-        searchResultItem.url = itemRaw[@"a"][@"href"];
-        searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:itemRaw[@"a"][@"img"][@"src"]];
-        searchResultItem.price =  [itemRaw[@"p"][1][@"span"][0][@"b"][@"content"] integerValue];
-        searchResultItem.desc = @"";
-        [resAry addObject:searchResultItem];
+    
+    //if (  [results objectForKey:@"query"] != nil && [[results objectForKey:@"query"] objectForKey:@"results"]!=nil ) {
+    
+    if ( ![results[@"query"] isEqual:[NSNull null]] &&
+         ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
+         ![results[@"query"][@"results"][@"li"] isEqual:[NSNull null]])
+    {
+        NSArray *itemAry = results[@"query"][@"results"][@"li"];
+        
+        for (NSDictionary *itemRaw in itemAry) {
+            if (![itemRaw[@"p"] isEqual:[NSNull null]]&&
+                ![itemRaw[@"p"][0] isEqual:[NSNull null]]&&
+                ![itemRaw[@"a"] isEqual:[NSNull null]]&&
+                ![itemRaw[@"a"][@"href"] isEqual:[NSNull null]]&&
+                ![itemRaw[@"p"][1] isEqual:[NSNull null]] &&
+                ![itemRaw[@"p"][1][@"span"] isEqual:[NSNull null]] &&
+                [itemRaw[@"p"][1][@"span"] isKindOfClass:[NSArray class]]
+                ) {
+                
+            SearchResultItem* searchResultItem = [[SearchResultItem alloc] init];
+            searchResultItem.property = @"Momo";
+            searchResultItem.title = itemRaw[@"p"][0][@"a"][@"title"];
+            searchResultItem.url = itemRaw[@"a"][@"href"];
+            searchResultItem.imageUrl = [[self.baseImageUrlStr copy] stringByAppendingString:itemRaw[@"a"][@"img"][@"src"]];
+        
+            searchResultItem.price =  [itemRaw[@"p"][1][@"span"][0][@"b"][@"content"] integerValue];
+            searchResultItem.desc = @"";
+            [resAry addObject:searchResultItem];
+                }
+        }
+        
     }
+    
     return resAry;
 }
 

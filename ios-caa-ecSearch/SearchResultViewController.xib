@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchResultViewController">
             <connections>
+                <outlet property="searchBar" destination="7sD-ag-2Zq" id="cIv-6U-qW2"/>
+                <outlet property="tableView" destination="KWy-gd-f68" id="SvZ-iA-WCo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="7sD-ag-2Zq">
+                    <rect key="frame" x="0.0" y="63" width="320" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="dOC-uv-R9a"/>
+                    </constraints>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KWy-gd-f68">
+                    <rect key="frame" x="0.0" y="107" width="320" height="461"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="7sD-ag-2Zq" secondAttribute="trailing" id="XsD-R9-ibO"/>
+                <constraint firstAttribute="bottom" secondItem="KWy-gd-f68" secondAttribute="bottom" id="Yfe-HH-0RL"/>
+                <constraint firstAttribute="trailing" secondItem="KWy-gd-f68" secondAttribute="trailing" id="cFR-m1-NcN"/>
+                <constraint firstItem="7sD-ag-2Zq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kI3-zm-CGE"/>
+                <constraint firstItem="KWy-gd-f68" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kWb-dC-AVz"/>
+                <constraint firstItem="7sD-ag-2Zq" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="63" id="kY6-h9-fId"/>
+                <constraint firstItem="KWy-gd-f68" firstAttribute="top" secondItem="7sD-ag-2Zq" secondAttribute="bottom" id="vjD-79-Q0k"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
 </document>
