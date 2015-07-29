@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4AF398F83375DB2A17848342 /* libPods-ios-caa-ecSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A95FDFEDA1CF97A7A33A0897 /* libPods-ios-caa-ecSearch.a */; };
+		AD248FFA1B68731F00DA3564 /* unused.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD248FF91B68731F00DA3564 /* unused.cpp */; };
 		AD9D9D9A1B66190100EAE292 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AD9D9D991B66190100EAE292 /* main.m */; };
 		AD9D9D9D1B66190100EAE292 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AD9D9D9C1B66190100EAE292 /* AppDelegate.m */; };
 		AD9D9DA01B66190100EAE292 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AD9D9D9F1B66190100EAE292 /* ViewController.m */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		7F9495AE253F361A7102940F /* Pods-ios-caa-ecSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-caa-ecSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios-caa-ecSearch/Pods-ios-caa-ecSearch.release.xcconfig"; sourceTree = "<group>"; };
 		A95FDFEDA1CF97A7A33A0897 /* libPods-ios-caa-ecSearch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ios-caa-ecSearch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD248FF91B68731F00DA3564 /* unused.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unused.cpp; path = unusedCode/unused.cpp; sourceTree = "<group>"; };
 		AD9D9D941B66190100EAE292 /* ios-caa-ecSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-caa-ecSearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD9D9D981B66190100EAE292 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD9D9D991B66190100EAE292 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -110,6 +112,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AD248FF81B6872BE00DA3564 /* Unused code */ = {
+			isa = PBXGroup;
+			children = (
+				AD248FF91B68731F00DA3564 /* unused.cpp */,
+			);
+			name = "Unused code";
+			sourceTree = "<group>";
+		};
 		AD9D9D8B1B66190100EAE292 = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +143,7 @@
 		AD9D9D961B66190100EAE292 /* ios-caa-ecSearch */ = {
 			isa = PBXGroup;
 			children = (
+				AD248FF81B6872BE00DA3564 /* Unused code */,
 				AD9D9DCC1B661C8400EAE292 /* View Controllers */,
 				AD9D9DC01B661B3E00EAE292 /* Models */,
 				AD9D9D9B1B66190100EAE292 /* AppDelegate.h */,
@@ -349,6 +360,7 @@
 				AD9D9DCB1B661BFC00EAE292 /* SearchResultItem.m in Sources */,
 				ADA727D71B663CEB002AA449 /* ECSearch.m in Sources */,
 				EE1EE7FF1B675E2200C940F3 /* KingStoneSearch.m in Sources */,
+				AD248FFA1B68731F00DA3564 /* unused.cpp in Sources */,
 				AD9D9D9D1B66190100EAE292 /* AppDelegate.m in Sources */,
 				AD9D9DBF1B66195F00EAE292 /* YQL.m in Sources */,
 				AD9D9D9A1B66190100EAE292 /* main.m in Sources */,
