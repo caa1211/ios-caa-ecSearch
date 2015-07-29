@@ -10,6 +10,14 @@
 
 @implementation SearchResultItem
 
+-(id)initWithPropertyName:(NSString *)propertyName{
+    self = [super init];
+    if (self) {
+        _property = propertyName;
+    }
+    return self;
+}
+
 +(BOOL)propertyIsOptional:(NSString*)propertyName
 {
     return YES;

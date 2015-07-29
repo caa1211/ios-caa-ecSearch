@@ -46,6 +46,10 @@
 
 @implementation PcHomeSearch
 
+-(NSString *) propertyName {
+    return @"PCHome";
+}
+
 -(id)init {
     self = [super init];
     if(self){
@@ -65,11 +69,12 @@
             
             NSError *err;
             PcHome24Item *item = [[PcHome24Item alloc]initWithDictionary:itemRaw error:&err];
-            item.property = @"PCHome";
+            item.property = self.propertyName;
             [resAry addObject:item];
         }
         
         completion(resAry, nil);
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         completion(nil, error);
     }] ;

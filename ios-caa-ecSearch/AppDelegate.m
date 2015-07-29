@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "SearchResultViewController.h"
 
+//#import "ViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -20,6 +22,9 @@
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[SearchResultViewController alloc]init]];
+    
+    
+//    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc]init]];
     
     return YES;
 }

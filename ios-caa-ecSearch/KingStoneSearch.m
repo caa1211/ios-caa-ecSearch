@@ -101,18 +101,7 @@
     return resAry;
 }
 
--(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion {
-    
-    dispatch_async(self.queryQueue, ^{
-        
-        NSMutableArray* resAry = [self searchWithKeyword:keyword];
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            completion(resAry, nil);
-        });
-        
-    });
-}
+
 
 
 @end

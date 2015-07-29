@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OCGumbo/OCGumbo+Query.h"
 #import "SearchResultItem.h"
 
 @interface ECSearch : NSObject
+-(NSString *) propertyName;
 -(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion;
 @end

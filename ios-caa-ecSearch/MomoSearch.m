@@ -2,110 +2,62 @@
 //  MomoSearch.m
 //  ios-caa-ecSearch
 //
-//  Created by Carter Chang on 7/27/15.
+//  Created by Carter Chang on 7/29/15.
 //  Copyright (c) 2015 Carter Chang. All rights reserved.
 //
 
 #import "MomoSearch.h"
-#import "YQL.h"
 
-@interface MomoSearch ()
-  @property (strong, nonatomic) NSMutableArray *result;
-  @property(nonatomic, strong) YQL* yql;
-  @property(strong, nonatomic) dispatch_queue_t queryQueue;
-  @property(nonatomic, strong) NSString *baseImageUrlStr;
-  @property(nonatomic, strong) NSString *queryString;
-@end
-
-
-
-@implementation MomoSearchItem
-
-+(JSONKeyMapper*)keyMapper
-{
-    return [[JSONKeyMapper alloc] initWithDictionary:@{
-                                                       @"a.href" : @"url",
-                                                       @"a.img.src" : @"imageUrl",
-                                                       @"tmpTitle" : @"title",
-                                                       @"tmpPrice" : @"price",
-                                                       @"property" : @"property",
-                                                       @"desc" : @"desc"
-                                                       }];
-}
-
--(void)setImageUrl:(NSString*)url
-{
-    NSString *baseImageUrlStr = @"http://www.momoshop.com.tw";
-    url = [baseImageUrlStr stringByAppendingString:url];
-    [super setImageUrl:url];
-}
-
-@end
 
 @implementation MomoSearch
 
--(id)init {
-    self = [super init];
-    if(self){
-       self.yql = [[YQL alloc]init];
-       self.queryQueue = dispatch_queue_create("momo_queue", nil);
-       self.queryString = @"select * from html where url=\"http://www.momoshop.com.tw/mosearch/%@.html\" and xpath='//ul[@id=\"column\"]/li'";
-       self.baseImageUrlStr = @"http://www.momoshop.com.tw";
-    }
-    return self;
+-(NSString *) propertyName {
+    return @"Momo";
 }
 
-
 -(NSMutableArray *) searchWithKeyword:(NSString*)keyword {
-    NSString* queryKeyword = [keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *resAry = [[NSMutableArray alloc]init];
     
-    NSString* queryStr = [NSString stringWithFormat:self.queryString,queryKeyword];
+    // Fetch html doc
+    NSString* queryKeyword =[keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *url =[NSString stringWithFormat:@"http://www.momoshop.com.tw/mosearch/%@.html",queryKeyword];
+    NSError *err = nil;
+    NSString *html = [NSString stringWithContentsOfURL:[NSURL URLWithString:url] encoding:NSUTF8StringEncoding error:&err];
+    if(err) {
+        return resAry;
+    }
     
-    NSDictionary *results = [self.yql query:queryStr];
-    NSMutableArray* resAry = [[NSMutableArray alloc]init];
-
-    if ( ![results[@"query"] isEqual:[NSNull null]] &&
-        ![results[@"query"][@"results"] isEqual:[NSNull null]] &&
-        ![results[@"query"][@"results"][@"li"] isEqual:[NSNull null]])
-    {
-        NSArray *itemAry = results[@"query"][@"results"][@"li"];
+    // Parse dom tree
+    OCGumboDocument *doc = [[OCGumboDocument alloc] initWithHTMLString:html];
+    OCQueryObject *lis = doc.Query(@"ul#column").children(@"li");
+    
+    for(OCGumboElement *li in lis){
+        SearchResultItem *item = [[SearchResultItem alloc] initWithPropertyName:self.propertyName];
         
-        for (NSDictionary *itemRaw in itemAry) {
-            NSError *err;
-            
-            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:itemRaw];
-            
-            if ([itemRaw[@"p"] isKindOfClass:[NSArray class]]){
-                [dic setValue:itemRaw[@"p"][0][@"a"][@"title"] forKey:@"tmpTitle"];
-                
-                if ([dic[@"p"][1][@"span"] isKindOfClass:[NSArray class]]) {
-                    [dic setValue:itemRaw[@"p"][1][@"span"][0][@"b"][@"content"] forKey:@"tmpPrice"];
-                }
-            }
-            
-            [dic setObject:@"" forKey:@"desc"];
-            [dic setObject:@"Momo" forKey:@"property"];
-            
-            MomoSearchItem *momoitem = [[MomoSearchItem alloc]initWithDictionary:dic error:&err];
-            [resAry addObject:momoitem];
+        OCQueryObject *aTag = li.Query(@"#goods_name").children(@"a");
+        if (aTag.count == 1)
+        {
+            item.url = aTag.first().attr(@"href");
+            item.title = aTag.first().text();
         }
         
+        OCQueryObject *discountPrice = li.Query(@"p.discountPrice");
+        OCQueryObject *priceTag = discountPrice.find(@".money").children(@"b");
+        if (priceTag.count == 1) {
+            item.price = [priceTag.first().text() integerValue];
+        }
+        
+        OCQueryObject *imgTag = li.Query(@"a").children(@"img");
+        if (imgTag.count == 1) {
+            NSString *baseImageUrlStr = @"http://www.momoshop.com.tw";
+            NSString *url = [baseImageUrlStr stringByAppendingString:imgTag.first().attr(@"src")];
+            item.imageUrl = url;
+        }
+        
+        [resAry addObject:item];
     }
     
     return resAry;
-}
-
--(void) searchWithKeywordAsync:(NSString *)keyword completion: (void(^)(NSMutableArray *result, NSError *error))completion {
-    
-    dispatch_async(self.queryQueue, ^{
-        
-        NSMutableArray* resAry = [self searchWithKeyword:keyword];
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            completion(resAry, nil);
-        });
-        
-    });
 }
 
 

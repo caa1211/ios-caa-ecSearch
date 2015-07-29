@@ -1,5 +1,5 @@
 //
-//  MomoSearch.h
+//  KSSearch.h
 //  ios-caa-ecSearch
 //
 //  Created by Carter Chang on 7/29/15.
@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "ECSearch.h"
 
-@interface MomoSearch : ECSearch
-
+@interface KSSearch : ECSearch
 
 @end
-

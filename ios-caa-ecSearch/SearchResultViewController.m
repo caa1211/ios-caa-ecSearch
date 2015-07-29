@@ -7,10 +7,11 @@
 //
 
 #import "SearchResultViewController.h"
+#import "SearchResultCell.h"
+
 #import "MomoSearch.h"
 #import "PcHomeSearch.h"
-#import "KingStoneSearch.h"
-#import "SearchResultCell.h"
+#import "KSSearch.h"
 
 @interface SearchResultViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -119,7 +120,6 @@ typedef enum ECPROPERTY : NSInteger {
         [momoSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                // Sort
                 [self.tableView reloadData];
             }
         }];
@@ -131,7 +131,6 @@ typedef enum ECPROPERTY : NSInteger {
         [pcHomeSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                // Sort
                 [self.tableView reloadData];
             }
         }];
@@ -139,11 +138,10 @@ typedef enum ECPROPERTY : NSInteger {
 
     if ([self.ecPropertySet containsIndex:ECPROPERTY_KINGSTONE]) {
         //KingStone
-        ECSearch *kingStoneSearch = [[KingStoneSearch alloc] init];
+        ECSearch *kingStoneSearch = [[KSSearch alloc] init];
         [kingStoneSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                // Sort
                 [self.tableView reloadData];
             }
         }];
@@ -156,19 +154,9 @@ typedef enum ECPROPERTY : NSInteger {
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DefaultCell" forIndexPath:indexPath];
-    //    cell.backgroundColor = tableView.backgroundColor;
-    //    cell.textLabel.text = item.title;
-    //    cell.textLabel.font = [UIFont systemFontOfSize:18];
-    //    cell.textLabel.textColor = [UIColor colorWithRed:0.335 green:0.632 blue:0.916 alpha:1.000];
-    //
-    
     SearchResultItem *item = self.searchResultItems[indexPath.row];
     SearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultCell" forIndexPath:indexPath];
     cell.searchResultItem = item;
-    
     return cell;
 }
 

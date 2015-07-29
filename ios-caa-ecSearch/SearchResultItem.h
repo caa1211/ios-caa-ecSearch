@@ -18,4 +18,6 @@
 @property (nonatomic, strong) NSString *desc;
 @property (nonatomic, assign) NSInteger price;
 
+-(id)initWithPropertyName:(NSString *)propertyName;
+
 @end

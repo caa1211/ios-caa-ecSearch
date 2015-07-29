@@ -10,6 +10,7 @@
 
 #define QUERY_PREFIX @"http://query.yahooapis.com/v1/public/yql?q="
 #define QUERY_SUFFIX @"&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback="
+#define QUERYXML_SUFFIX @"&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback="
 
 @implementation YQL
 
@@ -23,6 +24,17 @@
     if (error) NSLog(@"[%@ %@] JSON error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
     
     return results;
+}
+
+- (NSString *) queryxml: (NSString *)statement {
+    NSString *query = [NSString stringWithFormat:@"%@%@%@", QUERY_PREFIX, [statement stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding], QUERYXML_SUFFIX];
+    
+    NSError *error = nil;
+    NSString *html = [NSString stringWithContentsOfURL:[NSURL URLWithString:query] encoding:NSUTF8StringEncoding error:&error];
+    
+    if (error) NSLog(@"[%@ %@] XML error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error.localizedDescription);
+    
+    return html;
 }
 
 @end
