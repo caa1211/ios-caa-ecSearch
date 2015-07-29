@@ -19,6 +19,7 @@
 @property (strong ,nonatomic) NSMutableArray* searchResultItems;
 @property (nonatomic, strong) NSTimer *searchDelayer;
 @property (nonatomic, strong) NSMutableIndexSet *ecPropertySet;
+@property (nonatomic, assign) int activityCount;
 
 @end
 
@@ -111,42 +112,77 @@ typedef enum ECPROPERTY : NSInteger {
 }
 
 
+- (void)incrementActivityCount
+{
+    if(_activityCount == 0)
+    {
+      [self.searchResultItems removeAllObjects];
+    }
+    _activityCount++;
+}
+
+- (void)decrementActivityCount
+{
+    _activityCount--;
+    if(_activityCount <= 0)
+    {
+        self.searchResultItems = [self sortArray:self.searchResultItems];
+        [self.tableView reloadData];
+        _activityCount = 0;
+    }
+}
+
 - (void) doQuery:(NSString*) keyword {
-    [self.searchResultItems removeAllObjects];
-    
+
     if ([self.ecPropertySet containsIndex:ECPROPERTY_MOMO]) {
+        
+        [self incrementActivityCount];
         //Momo
         ECSearch *momoSearch = [[MomoSearch alloc] init];
         [momoSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                [self.tableView reloadData];
             }
+            [self decrementActivityCount];
         }];
     }
     
     if ([self.ecPropertySet containsIndex:ECPROPERTY_PCHOME24]) {
+        [self incrementActivityCount];
         //PCHome
         ECSearch *pcHomeSearch = [[PcHomeSearch alloc] init];
         [pcHomeSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                [self.tableView reloadData];
             }
+            [self decrementActivityCount];
         }];
     }
 
     if ([self.ecPropertySet containsIndex:ECPROPERTY_KINGSTONE]) {
+        [self incrementActivityCount];
         //KingStone
         ECSearch *kingStoneSearch = [[KSSearch alloc] init];
         [kingStoneSearch searchWithKeywordAsync:keyword completion:^(NSMutableArray *result, NSError *error) {
             if (error == nil) {
                 [self.searchResultItems addObjectsFromArray:result];
-                [self.tableView reloadData];
             }
+            [self decrementActivityCount];
         }];
     }
+
 }
+
+
+- (NSMutableArray*) sortArray:(NSMutableArray*)sourceAry {
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"price"
+                                                                   ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    NSArray *sortedArray = [sourceAry sortedArrayUsingDescriptors:sortDescriptors];
+    NSMutableArray *ary = [NSMutableArray arrayWithArray:sortedArray];
+    return ary;
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.searchResultItems.count;
